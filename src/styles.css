@@ -1,0 +1,337 @@
+@import url("https://rsms.me/inter/inter.css");
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter";
+  background: #fdfdfd;
+  cursor:
+    url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxMCIgZmlsbD0iI0U4QjA1OSIvPjwvc3ZnPg=="),
+    auto;
+}
+
+a {
+  color: black;
+}
+
+a {
+  pointer-events: all;
+  color: black;
+  text-decoration: none;
+}
+
+svg {
+  fill: black;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+canvas {
+  opacity: 0;
+  touch-action: none;
+  animation: fade-in 5s ease 1s forwards;
+}
+
+/* Dark overlay that covers the whole window and centers the panel */
+.detail-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+}
+
+/* The white panel itself; it scrolls inside if the text is long */
+.detail {
+    position: relative;
+    background: #fff;
+    border-radius: 24px;
+    padding: 24px;
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+    /* Keeps big images from taking over the panel */
+    .detail img {
+        display: block;
+        width: 100%;
+        max-height: 45vh;
+        object-fit: cover;
+        border-radius: 16px;
+    }
+
+.detail-meta,
+.detail-tech {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Close button: dark circle that stays visible while the panel scrolls */
+.detail-close {
+    position: sticky;
+    top: 0;
+    float: right;
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    margin: 0 0 -40px 8px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+    .detail-close:hover {
+        background: #000;
+    }
+
+    .detail-close:focus-visible {
+        outline: 3px solid #e8b059;
+        outline-offset: 2px;
+    }
+
+/* Title overlay: sits above the canvas, below the project panel */
+.hero {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    padding: 40px 24px 0;
+    text-align: center;
+    color: #fff;
+    pointer-events: none; /* so scrolling and card clicks pass through */
+    text-shadow: 0 2px 20px rgba(60, 20, 80, 0.45);
+    animation: fade-in 3s ease 0.5s both;
+}
+
+.hero-kicker {
+    margin: 0 0 12px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    opacity: 0.85;
+}
+
+.hero-title {
+    margin: 0;
+    font-size: clamp(28px, 5vw, 56px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+    /* Your name stands out in the accent color used by the cursor */
+    .hero-title span {
+        font-weight: 700;
+        color: #e8b059;
+    }
+
+.hero-sub {
+    margin: 16px 0 0;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    opacity: 0.9;
+}
+
+/* Small bouncing arrow as a scroll hint */
+.hero-arrow {
+    margin-top: 8px;
+    font-size: 22px;
+    animation: bounce 1.8s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(8px);
+    }
+}
+
+/* ---------- Navigation bar (bottom center) ---------- */
+.nav {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 6;
+    display: flex;
+    gap: 4px;
+    padding: 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    animation: fade-in 3s ease 1s both;
+}
+
+    .nav button {
+        border: 0;
+        border-radius: 999px;
+        padding: 10px 20px;
+        background: transparent;
+        color: #fff;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+    }
+
+        .nav button:hover {
+            background: #fff;
+            color: #3a1f4a;
+        }
+
+        .nav button:focus-visible {
+            outline: 3px solid #e8b059;
+            outline-offset: 2px;
+        }
+
+/* ---------- Slide-over panel ---------- */
+.side-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 11;
+    background: rgba(0, 0, 0, 0.4);
+    animation: fade-in 0.25s ease both;
+}
+
+.side {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: min(440px, 100%);
+    padding: 32px 28px;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 24px 0 0 24px;
+    animation: slide-in 0.3s ease both;
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.side h2 {
+    margin: 0 0 16px;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.side h3 {
+    margin: 28px 0 10px;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #888;
+}
+
+.side p {
+    line-height: 1.6;
+}
+
+/* Timeline */
+.timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 16px;
+    border-left: 2px solid #e8b059;
+}
+
+    .timeline li {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        margin-bottom: 16px;
+    }
+
+.timeline-period {
+    font-size: 13px;
+    color: #888;
+}
+
+/* Skill chips */
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+    .chips span {
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: #f3ecf7;
+        font-size: 14px;
+    }
+
+/* Contact */
+.contact-list {
+    list-style: none;
+    margin: 0 0 24px;
+    padding: 0;
+}
+
+    .contact-list a {
+        display: block;
+        padding: 14px 0;
+        border-bottom: 1px solid #eee;
+        font-size: 18px;
+    }
+
+        .contact-list a:hover {
+            color: #a0701f;
+        }
+
+.cv-button {
+    display: inline-block;
+    padding: 12px 22px;
+    border-radius: 999px;
+    background: #3a1f4a;
+    color: #fff !important;
+    font-weight: 500;
+}
+
+    .cv-button:hover {
+        background: #000;
+    }
